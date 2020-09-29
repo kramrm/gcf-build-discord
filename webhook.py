@@ -1,8 +1,9 @@
 import requests
 import json
+import os
 
 def post_webhook(message, timestamp, title='Status', color=0):
-    url = ''
+    url = os.environ.get('WEBHOOK')
     data = {}
     data['embeds'] = []
     embed = {}
