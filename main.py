@@ -7,8 +7,8 @@ from webhook import post_webhook
 def hello_pubsub(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
-         event (dict): Event payload.
-         context (google.cloud.functions.Context): Metadata for the event.
+        event (dict): Event payload.
+        context (google.cloud.functions.Context): Metadata for the event.
     """
     pubsub_message = base64.b64decode(event['data']).decode('utf-8')
     message = json.loads(pubsub_message)
@@ -39,4 +39,4 @@ def hello_pubsub(event, context):
                 log_message += f"\n**Git commit**: {message['sourceProvenance']['resolvedRepoSource']['commitSha'][:7]}"
     if 'logUrl' in message:
         log_message += f'\n[Stackdriver log]({message["logUrl"]})'
-    post_webhook(message=log_message, timestamp=timestamp, title=status)
+    post_webhook(message=log_message, timestamp=timestamp, title=status, color=color)
