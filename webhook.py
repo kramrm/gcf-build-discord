@@ -11,6 +11,8 @@ def post_webhook(message, timestamp, title='Status', color=0):
         timestamp (str): ISO 8601 timestamp of the event
         title (str): Stats of the build process for the embed title.  Defaults to 'Status'
         color (int): Color to use for embed highlight. Defaults to black
+    Returns
+        result (requests.result): Result of Requests post
     """
     url = os.environ.get('WEBHOOK')
     data = {}
