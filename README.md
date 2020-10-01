@@ -1,6 +1,6 @@
 # gcf-build-discord
 
-This is a Google Cloud Function to read messages Cloud Build status messages from Pub/Sub and relay those to a Discord webhook
+This is a Google Cloud Function to read Cloud Build status messages from Pub/Sub and relay those to a Discord webhook
 
 ## Setup
 
