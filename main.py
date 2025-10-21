@@ -6,12 +6,13 @@ import base64
 import json
 import os
 from datetime import datetime, timezone
+from typing import Any, Optional
 
 import requests
 from dateutil.parser import parse
 
 
-def hello_pubsub(event, context):
+def hello_pubsub(event: dict, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
         event (dict): Event payload.
@@ -31,16 +32,16 @@ def hello_pubsub(event, context):
         created = parse(message["createTime"])
         timestamp = message["createTime"]
         color = 35071
-        log_message += f"\n**Created:** {created.date()} {created.time()} UTC"
+        log_message += f"\n**Created:** <t:{created.timestamp()}>"
     if "startTime" in message:
         started = parse(message["startTime"])
         timestamp = message["startTime"]
         color = 16772608
-        log_message += f"\n**Started:** {started.date()} {started.time()} UTC"
+        log_message += f"\n**Started:** <t:{started.timestamp()}>"
     if "finishTime" in message:
         finished = parse(message["finishTime"])
         timestamp = message["finishTime"]
-        log_message += f"\n**Finished:** {finished.date()} {finished.time()} UTC"
+        log_message += f"\n**Finished:** <t:{finished.timestamp()}>"
         color = 65297
     if "sourceProvenance" in message:
         if "resolvedRepoSource" in message["sourceProvenance"]:
@@ -51,7 +52,12 @@ def hello_pubsub(event, context):
     post_webhook(message=log_message, timestamp=timestamp, title=status, color=color)
 
 
-def post_webhook(message, timestamp, title="Status", color=0):
+def post_webhook(
+    message: str,
+    timestamp: str,
+    title: Optional[str] = "Status",
+    color: Optional[int] = 0,
+):
     """Post webhook to Discord
     Set an environment variable for 'WEBHOOK' to point to the URI for your channel
 
@@ -66,9 +72,9 @@ def post_webhook(message, timestamp, title="Status", color=0):
     url = os.environ.get("WEBHOOK")
     if not url:
         raise ValueError("No WEBHOOK env variable set")
-    data = {}
+    data: dict[str, Any] = {}
     data["embeds"] = []
-    embed = {}
+    embed: dict[str, Any] = {}
     embed["title"] = f"Cloud Build {title}"
     embed["description"] = message
     embed["footer"] = {}
