@@ -32,16 +32,16 @@ def hello_pubsub(event: dict, context):
         created = parse(message["createTime"])
         timestamp = message["createTime"]
         color = 35071
-        log_message += f"\n**Created:** <t:{created.timestamp()}>"
+        log_message += f"\n**Created:** <t:{int(created.timestamp())}>"
     if "startTime" in message:
         started = parse(message["startTime"])
         timestamp = message["startTime"]
         color = 16772608
-        log_message += f"\n**Started:** <t:{started.timestamp()}>"
+        log_message += f"\n**Started:** <t:{int(started.timestamp())}>"
     if "finishTime" in message:
         finished = parse(message["finishTime"])
         timestamp = message["finishTime"]
-        log_message += f"\n**Finished:** <t:{finished.timestamp()}>"
+        log_message += f"\n**Finished:** <t:{int(finished.timestamp())}>"
         color = 65297
     if "sourceProvenance" in message:
         if "resolvedRepoSource" in message["sourceProvenance"]:
