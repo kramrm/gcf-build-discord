@@ -6,12 +6,13 @@ import base64
 import json
 import os
 from datetime import datetime, timezone
+from typing import Any, Optional
 
 import requests
 from dateutil.parser import parse
 
 
-def hello_pubsub(event, context):
+def hello_pubsub(event: dict, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
         event (dict): Event payload.
@@ -51,7 +52,12 @@ def hello_pubsub(event, context):
     post_webhook(message=log_message, timestamp=timestamp, title=status, color=color)
 
 
-def post_webhook(message, timestamp, title="Status", color=0):
+def post_webhook(
+    message: str,
+    timestamp: str,
+    title: Optional[str] = "Status",
+    color: Optional[int] = 0,
+):
     """Post webhook to Discord
     Set an environment variable for 'WEBHOOK' to point to the URI for your channel
 
@@ -66,9 +72,9 @@ def post_webhook(message, timestamp, title="Status", color=0):
     url = os.environ.get("WEBHOOK")
     if not url:
         raise ValueError("No WEBHOOK env variable set")
-    data = {}
+    data: dict[str, Any] = {}
     data["embeds"] = []
-    embed = {}
+    embed: dict[str, Any] = {}
     embed["title"] = f"Cloud Build {title}"
     embed["description"] = message
     embed["footer"] = {}
